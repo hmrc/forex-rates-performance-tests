@@ -1,7 +1,7 @@
 **This is a template README.md.  Be sure to update this with project specific content that describes your performance test project.**
 
 # forex-rates-performance-tests
-Performance test suite for the `<digital service name>`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
+Performance test suite for the `forex-rates` service.
 
 
 ## Running the tests
@@ -12,13 +12,23 @@ Prior to executing the tests ensure you have:
 * Installed/configured service manager
 
 Run the following command to start the services locally:
-```
-docker run --rm -d --name mongo -d -p 27017:27017 mongo:4.0
 
-sm --start PLATFORM_EXAMPLE_UI_TESTS -r --wait 100
-```
+MongoDB:
 
-Using the `--wait 100` argument ensures a health check is run on all the services started as part of the profile. `100` refers to the given number of seconds to wait for services to pass health checks.
+Run at least 4.0 with a replica set: `docker run --restart unless-stopped -d -p 27017-27019:27017-27019 --name mongo4 mongo:4.0 --replSet rs0`
+Connect to said replica set: `docker exec -it mongo4 mongo`
+When that console is there: `rs.initiate()`
+You then should be running 4.0 with a replica set. You may have to re-run the rs.initiate() after you've restarted
+
+
+Service Manager:
+```
+sm --start ONE_STOP_SHOP_ALL -r
+```
+If running a branch of forex-rates locally, use the following command in the terminal:
+```
+"sbt run -Dapplication.router=testOnlyDoNotUseInAppConf.Routes"
+```
 
 ## Logging
 
